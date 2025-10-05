@@ -68,14 +68,17 @@ int main(int argc, char *argv[])
 
 	// read input
 	ssize_t size_read = read(fdr, buffer, 256);
-	printf("read: %s", buffer);
+	buffer[size_read] = '\0';
+	printf("read: \n==============\n%s==============\n", buffer);
+
 	// write to output
-	if (write(fdw, buffer, size_read) == -1) {
+	ssize_t bytes_written = write(fdw, buffer, size_read);
+	if (bytes_written != size_read) {
 		perror("Error writing to file\n");
 		goto cleanup;
 	}
 
-	printf("Done.");
+	printf("\nDone.\n");
 
 	close(fdw);
 	close(fdr);
